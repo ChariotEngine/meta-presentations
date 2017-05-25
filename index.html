@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Rust Meetup [date] - Chariot</title>
-    <meta charset="utf-8">
-    <style>
-      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
-      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
-      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 
-      body { font-family: 'Droid Serif'; }
-      h1, h2, h3 {
-        font-family: 'Yanone Kaffeesatz';
-        font-weight: normal;
-      }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-      img[alt=screenshot] { width: 100%; height: 100%; }
-    </style>
-  </head>
-  <body>
-    <textarea id="source">
+<head>
+  <title>Rust Meetup [date] - Chariot</title>
+  <meta charset="utf-8">
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+    @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+    @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+    body {
+      font-family: 'Droid Serif';
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Yanone Kaffeesatz';
+      font-weight: normal;
+    }
+
+    .remark-code,
+    .remark-inline-code {
+      font-family: 'Ubuntu Mono';
+    }
+
+    img[alt=screenshot] {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <textarea id="source">
 
 class: center, middle
 
@@ -103,21 +118,41 @@ The project was named `OpenAOE` before being renamed to `Chariot`
 
 # The DRS Format
 
-`DRS` is a home-grown container format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
+`DRS` is a container format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
 
-***TODO***
+Each `DRS` archive contains only a single file type (though this is not a requirement).
+
+---
+
+# The DRS Format
+
+You can use [`drs-utility`](https://github.com/ChariotEngine/drs-studio) to manipulate DRS archives.
+
+```sh
+$ drs-studio list --drs-path graphics.drs
+1.slp
+2.slp
+[..snip..]
+714.slp
+715.slp
+```
+
+```sh
+$ drs-studio extract --drs-path graphics.drs --file-names 00412.slp
+Wrote 171241 bytes to ./00412.slp
+```
 
 ---
 
 # The SLP Format
 
-`SLP` is a home-grown graphics format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
+`SLP` is a graphics format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
 
 ---
 
 # The SLP Format
 
-`SLP` is a home-grown graphics format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
+`SLP` is a graphics format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
 
 ![Chariot unit](./images/chariot-opengl.png)
 
@@ -127,7 +162,7 @@ The project was named `OpenAOE` before being renamed to `Chariot`
 
 An `SLP` is a container for paletted, animated images (think `GIF`).
 
-Q: Why didn't Ensemble Studios just use `GIF`?
+Q: Why didn't Ensemble Studios use `GIF`?
 
 ---
 
@@ -135,7 +170,7 @@ Q: Why didn't Ensemble Studios just use `GIF`?
 
 An `SLP` is a container for paletted, animated images (think `GIF`).
 
-Q: Why didn't Ensemble Studios just use `GIF`?
+Q: Why didn't Ensemble Studios use `GIF`?
 
 A: Storage and rendering optimizations!
 
@@ -218,10 +253,9 @@ color = vec4(index, 0.0, 0.0, 1.0); // RGBA
 ---
 
     </textarea>
-    <script src="./remark.min.js">
-    </script>
-    <script>
-      var slideshow = remark.create();
-    </script>
-  </body>
+  <script src="./remark.min.js"></script>
+  <script>
+    var slideshow = remark.create();
+  </script>
+</body>
 </html>
