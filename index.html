@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Title</title>
+    <title>Rust Meetup [date] - Chariot</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -30,13 +30,20 @@ class: center, middle
 
 1. Screenshot!
 2. Introduction to Chariot
-2. History of the project
-3. What is an SLP?
-4. ...
+3. History of the project
+4. The SLP format
+  4. SLP decoding
+5. ...
 
 ---
 
 ![screenshot](./images/player2.png)
+
+???
+
+Q: Who here knows which game this is?
+
+Q: Who has played it?
 
 ---
 
@@ -62,7 +69,7 @@ class: center, middle
 
 Explain that the windowing/input system will remain SDL2 but that the rendering will no longer use the fixed-function pipeline.
 
-Be prepared to explain the differences between the fixed-function pipeline and OpenGL's 3D if anyone asks.
+Be prepared to explain the differences between the fixed-function pipeline and OpenGL's pipeline if anyone asks.
 
 ---
 
@@ -74,7 +81,7 @@ Be prepared to explain the differences between the fixed-function pipeline and O
 
 * I said ["hey I'm going to maintain this!"](https://github.com/angered-ghandi/OpenAOE/issues/16#issuecomment-269776872) on December 30th of 2016
 
-* I forgot about it / was too busy to continue working on it :-(
+* I was too busy to continue working on it :-( (until about April 11th of 2017)
 
 * Now we are here and I devote many hours to the project
 
@@ -92,45 +99,111 @@ The project was named `OpenAOE` before being renamed to `Chariot`
 
 ---
 
-# What is an SLP?
+# The SLP Format
 
-`SLP` is a home-grown graphics container format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
+`SLP` is a complex home-grown graphics format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
 
 ---
 
-# What is an SLP?
+# The SLP Format
 
-`SLP` is a home-grown graphics container format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
+`SLP` is a complex home-grown graphics format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
 
 ![Chariot unit](./images/chariot-opengl.png)
 
 ---
 
-# What is an SLP?
+# The SLP Format
 
 An `SLP` is a container for paletted, animated images (think `GIF`).
 
-Q: Why didn't ES just use `GIF`?
+Q: Why didn't Ensemble Studios just use `GIF`?
 
 ---
 
-# What is an SLP?
+# The SLP Format
 
 An `SLP` is a container for paletted, animated images (think `GIF`).
 
-Q: Why didn't ES just use `GIF`?
+Q: Why didn't Ensemble Studios just use `GIF`?
 
 A: Storage and rendering optimizations!
 
 ---
 
-# What is an SLP?
-
-An `SLP` is a container for paletted, animated images (think `GIF`).
+# SLP Decoding
 
 `SLP` frame data consists of opcodes, palette indices, and renderer commands.
 
-*TODO: Image here*
+```rust
+// SLP opcodes are stored in the lowest 4 bits of the command byte.
+let opcode = cmd_byte & 0b00001111;
+
+match opcode {
+    // Block copy
+    0b0000 | 0b0100 | 0b1000 | 0b1100 => {
+        let length = try!(SixUpperBit.decode(cmd_byte, cursor));
+        for _ in 0..length {
+            shape.pixels[(y * width + x) as usize] = try!(cursor.read_u8());
+            x += 1;
+        }
+    }
+
+    // Skip pixels
+    0b0001 | 0b0101 | 0b1001 | 0b1101 => {
+        x += try!(SixUpperBit.decode(cmd_byte, cursor)) as u32;
+    }
+
+    ...
+}
+```
+
+SLP decoding code lives at [ChariotEngine/Slp](https://github.com/ChariotEngine/Slp)
+
+---
+
+# SLP Decoding
+
+The end result is a 2D array of palette indices that we use to render color.
+
+```glsl
+index = getValueAt(spriteData, xy); // integer 0..255
+color = getValueAt(palette, index); // RGBA
+```
+
+---
+
+# SLP Decoding
+
+The end result is a 2D array of palette indices that we use to render color.
+
+```glsl
+index = getValueAt(spriteData, xy); // integer 0..255
+color = getValueAt(palette, index); // RGBA
+```
+
+![frag-zoom-color](./images/frag-zoom-color.png)
+
+???
+
+00412.slp frame index 18
+
+---
+
+# SLP Decoding + Debugging
+
+The end result is a 2D array of palette indices that we use to render color.
+
+```glsl
+index = getValueAt(spriteData, xy); // integer 0..255
+color = vec4(index, 0.0, 0.0, 1.0); // RGBA
+```
+
+![frag-zoom-debug](./images/frag-zoom-debug.png)
+
+???
+
+00412.slp frame index 18
 
 ---
 
