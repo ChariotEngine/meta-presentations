@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      img[alt=screenshot] { width: 100%; height: 100%; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Rust meetup [date here]
+
+---
+
+# Agenda
+
+1. Screenshot!
+2. Introduction to Chariot
+2. History of the project
+3. What is an SLP?
+4. ...
+
+---
+
+![screenshot](./images/player2.png)
+
+---
+
+# Introduction to Chariot
+
+* General information
+  * RTS game engine
+  * https://github.com/ChariotEngine
+  * Written in (stable) Rust
+  * MIT licensed
+
+* Lots of work to do
+  * Graphics engine rewrite (SDL2 → OpenGL)
+  * More SLP decoding (shadow tricks, extended opcodes)
+  * Fix terrain on/off-screen calculation to account for Z axis
+  * Convince *you* to work on at least one piece of the project
+
+* Social media
+  * [Twitter](https://twitter.com/ChariotEngine)
+  * [Reddit](https://reddit.com/r/ChariotEngine)
+
+???
+
+Explain that the windowing/input system will remain SDL2 but that the rendering will no longer use the fixed-function pipeline.
+
+Be prepared to explain the differences between the fixed-function pipeline and OpenGL's 3D if anyone asks.
+
+---
+
+# History of Chariot
+
+* [Initial commit](https://github.com/angered-ghandi/OpenAOE/commit/8ba57c1781dca2cd1b5a5dcfed8c437ac9781ed4) by [Kevin Fuller](https://github.com/angered-ghandi) on June 17th of 2016
+
+* [My first PR for the project landed](https://github.com/angered-ghandi/OpenAOE/commit/44462131133bcb3b8c5fa572c20ed546696ca689) on July 11th 2016
+
+* I said ["hey I'm going to maintain this!"](https://github.com/angered-ghandi/OpenAOE/issues/16#issuecomment-269776872) on December 30th of 2016
+
+* I forgot about it / was too busy to continue working on it :-(
+
+* Now we are here and I devote many hours to the project
+
+---
+
+# History of Chariot
+
+The project was named `OpenAOE` before being renamed to `Chariot`
+
+*TODO: Explain why it was renamed (social media handles and domain availability)*
+
+---
+
+# What is an SLP?
+
+`SLP` is a home-grown graphics container format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
+
+---
+
+# What is an SLP?
+
+`SLP` is a home-grown graphics container format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
+
+![Chariot unit](./images/chariot-opengl.png)
+
+---
+
+# What is an SLP?
+
+An `SLP` is a container for paletted, animated images (think `GIF`).
+
+Q: Why didn't ES just use `GIF`?
+
+---
+
+# What is an SLP?
+
+An `SLP` is a container for paletted, animated images (think `GIF`).
+
+Q: Why didn't ES just use `GIF` then?
+
+A: Storage and rendering optimizations!
+
+---
+
+# What is an SLP?
+
+An `SLP` is a container for paletted, animated images (think `GIF`).
+
+`SLP` frame data consists of opcodes, palette indices, and renderer commands.
+
+*TODO: Image here*
+
+---
+
+    </textarea>
+    <script src="./remark.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
