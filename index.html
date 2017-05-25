@@ -47,10 +47,8 @@ class: center, middle
 2. Introduction to Chariot
 3. History of the project
 4. The DRS format
-  4. DRS decoding
 5. The SLP format
-  5. SLP decoding
-6. ...
+6. The BIN format
 
 ---
 
@@ -120,7 +118,27 @@ The project was named `OpenAOE` before being renamed to `Chariot`
 
 `DRS` is a container format created by [Ensemble Studios](https://en.wikipedia.org/wiki/Ensemble_Studios).
 
-Each `DRS` archive contains only a single file type (though this is not a requirement).
+`DRS`es consist of "tables" for each file type (for example: all `SLP`s are stored together in an `SLP` table).
+
+```sh
+GAME/DATA/BORDER.DRS:
+   6 slps
+
+GAME/DATA/GRAPHICS.DRS:
+ 683 slps
+
+GAME/DATA/INTERFAC.DRS:
+  50 bins
+  10 shps
+  98 slps
+  17 wavs
+ 
+GAME/DATA/SOUNDS.DRS:
+ 144 wavs
+ 
+GAME/DATA/TERRAIN.DRS:
+   4 slps
+```
 
 ---
 
@@ -176,7 +194,7 @@ A: Storage and rendering optimizations!
 
 ---
 
-# SLP Decoding
+# The SLP Format (decoding)
 
 `SLP` frame data consists of opcodes, palette indices, and renderer commands.
 
@@ -207,7 +225,7 @@ SLP decoding code lives at [ChariotEngine/Slp](https://github.com/ChariotEngine/
 
 ---
 
-# SLP Decoding
+# The SLP Format (rendering)
 
 The end result is a 2D array of palette indices that we use to render color.
 
@@ -218,7 +236,7 @@ color = getValueAt(palette, index); // RGBA
 
 ---
 
-# SLP Decoding
+# The SLP Format (rendering)
 
 The end result is a 2D array of palette indices that we use to render color.
 
@@ -235,13 +253,13 @@ color = getValueAt(palette, index); // RGBA
 
 ---
 
-# SLP Decoding + Debugging
+# The SLP Format (rendering + debugging)
 
 The end result is a 2D array of palette indices that we use to render color.
 
 ```glsl
 index = getValueAt(spriteData, xy); // integer 0..255
-color = vec4(index, 0.0, 0.0, 1.0); // RGBA
+color = rgba(index, 0.0, 0.0, 1.0); // RGBA
 ```
 
 ![frag-zoom-debug](./images/frag-zoom-debug.png)
